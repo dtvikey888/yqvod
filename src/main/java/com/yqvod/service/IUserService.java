@@ -1,5 +1,8 @@
 package com.yqvod.service;
 
+import com.yqvod.common.ServerResponse;
+import com.yqvod.pojo.User;
+
 /**
  * 项目名称：yqvod
  * 类 名 称：IUserService
@@ -8,5 +11,5 @@ package com.yqvod.service;
  * 创 建 人：fjw
  */
 public interface IUserService {
-    Object login(String username,String password);
+    ServerResponse<User> login(String username, String password);
 }
