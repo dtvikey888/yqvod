@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
  * @Date: 15/10/19 上午 10:52
  * @Version 1.0
  */
+
 @Controller
 @RequestMapping("/user/")
 public class UserController {
@@ -27,6 +28,5 @@ public class UserController {
     public Object login(String username, String password, HttpSession session){
         return null;
     }
-
 
 }
