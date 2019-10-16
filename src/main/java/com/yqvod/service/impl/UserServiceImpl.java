@@ -20,13 +20,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
-/**
- * @ClassName $ {NAME}
- * @Description TODO
- * @Author fjw
- * @Date 2019/10/15 3:41 PM
- * @Version 1.0
- **/
 @Service("iUserService")
 public class UserServiceImpl implements IUserService {
 
@@ -131,6 +124,12 @@ public class UserServiceImpl implements IUserService {
         }
 
         return ServerResponse.createByErrorMessage("问题的答案错误");
+    }
+
+    public ServerResponse<String> forgetResetPassword(String username,String passwordNew,String forgetToken){
+        if (StringUtils.isBlank(forgetToken)){
+            return ServerResponse.createByErrorMessage("参数错误，token需要传递");
+        }
     }
 
 }
