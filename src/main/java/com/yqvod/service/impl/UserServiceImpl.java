@@ -9,6 +9,7 @@ package com.yqvod.service.impl;
 
 import com.yqvod.common.Const;
 import com.yqvod.common.ServerResponse;
+import com.yqvod.common.TokenCache;
 import com.yqvod.dao.UserMapper;
 import com.yqvod.pojo.User;
 import com.yqvod.service.IUserService;
@@ -122,10 +123,14 @@ public class UserServiceImpl implements IUserService {
     public ServerResponse<String> checkAnswer(String username,String question,String answer){
         int resultCount = userMapper.checkAnswer(username,question,answer);
         if (resultCount>0){
-            //问题和问题答案是这个用户的并且是正确的
-            String forgetToken = UUID.randomUUID().toString();
+            //说明问题及问题答案是这个用户的，并且是正确的
+            String forgetToken=UUID.randomUUID().toString();
+            TokenCache.setKey(TokenCache.TOKEN_PREFIX+username,forgetToken);
+            return ServerResponse.createBySuccess(forgetToken);
 
         }
+
+        return ServerResponse.createByErrorMessage("问题的答案错误");
     }
 
 }
