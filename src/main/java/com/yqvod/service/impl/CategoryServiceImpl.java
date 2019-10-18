@@ -1,5 +1,7 @@
 package com.yqvod.service.impl;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.yqvod.common.ServerResponse;
 import com.yqvod.dao.CategoryMapper;
 import com.yqvod.pojo.Category;
@@ -12,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -66,5 +69,33 @@ public class CategoryServiceImpl implements ICategoryService {
             logger.info("未找到当前分类的子分类");
         }
         return ServerResponse.createBySuccess(categoryList);
+    }
+
+    public ServerResponse selectCategoryAndChildrenById(Integer categoryId){
+        Set<Category> categorySet = Sets.newHashSet();
+        findChildCategory(categorySet,categoryId);
+
+        List<Integer> categoryIdList = Lists.newArrayList();
+        if (categoryId!=null){
+            for (Category categoryItem:categorySet){
+                categoryIdList.add(categoryItem.getId());
+            }
+        }
+
+        return ServerResponse.createBySuccess(categoryIdList);
+    }
+
+    //递归算法，算出子节点
+    private Set<Category> findChildCategory(Set<Category> categorySet,Integer categoryId){
+        Category category = categoryMapper.selectByPrimaryKey(categoryId);
+        if (category!=null){
+            categorySet.add(category);
+        }
+        //查找子节点，递归算法一定要有一个退出的条件
+        List<Category> categoryList = categoryMapper.selectCategoryChildrenByParentId(categoryId);
+        for (Category categoryItem:categoryList) {
+            findChildCategory(categorySet,categoryItem.getId());
+        }
+        return categorySet;
     }
 }
