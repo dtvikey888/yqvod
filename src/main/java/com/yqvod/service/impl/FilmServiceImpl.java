@@ -1,5 +1,8 @@
 package com.yqvod.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
 import com.yqvod.common.ResponseCode;
 import com.yqvod.common.ServerResponse;
 import com.yqvod.dao.CategoryMapper;
@@ -10,10 +13,12 @@ import com.yqvod.service.IFilmService;
 import com.yqvod.util.DateTimeUtil;
 import com.yqvod.util.PropertiesUtil;
 import com.yqvod.vo.FilmDetailVo;
-import net.sf.jsqlparser.schema.Server;
+import com.yqvod.vo.FilmListVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @ClassName $ {NAME}
@@ -112,6 +117,36 @@ public class FilmServiceImpl implements IFilmService {
 
         return filmDetailVo;
 
+    }
+
+    public ServerResponse getFilmList(int pageNum,int pageSize){
+
+        PageHelper.startPage(pageNum,pageSize);
+        List<Film> filmList = filmMapper.selectList();
+
+        List<FilmListVo> filmListVoList = Lists.newArrayList();
+        for (Film filmItem:filmList) {
+            FilmListVo filmListVo = assembleFilmListVo(filmItem);
+            filmListVoList.add(filmListVo);
+        }
+        PageInfo pageResult = new PageInfo(filmList);
+
+        pageResult.setList(filmListVoList);
+        return ServerResponse.createBySuccess(pageResult);
+
+    }
+
+    private FilmListVo assembleFilmListVo(Film film){
+        FilmListVo filmListVo = new FilmListVo();
+        filmListVo.setId(film.getId());
+        filmListVo.setCategoryId(film.getCategoryId());
+        filmListVo.setName(film.getName());
+        filmListVo.setSubtitle(film.getSubtitle());
+        filmListVo.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix","http://image.yqvod.com/"));
+        filmListVo.setMainImage(film.getMainImage());
+        filmListVo.setFilmUrl(film.getFilmUrl());
+        filmListVo.setStatus(film.getStatus());
+        return filmListVo;
     }
 
 }

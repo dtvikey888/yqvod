@@ -2,6 +2,8 @@ package com.yqvod.dao;
 
 import com.yqvod.pojo.Film;
 
+import java.util.List;
+
 public interface FilmMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -14,4 +16,6 @@ public interface FilmMapper {
     int updateByPrimaryKeySelective(Film record);
 
     int updateByPrimaryKey(Film record);
+
+    List<Film> selectList();
 }
