@@ -2,11 +2,17 @@ package com.yqvod.service.impl;
 
 import com.yqvod.common.ResponseCode;
 import com.yqvod.common.ServerResponse;
+import com.yqvod.dao.CategoryMapper;
 import com.yqvod.dao.FilmMapper;
+import com.yqvod.pojo.Category;
 import com.yqvod.pojo.Film;
 import com.yqvod.service.IFilmService;
+import com.yqvod.util.DateTimeUtil;
+import com.yqvod.util.PropertiesUtil;
+import com.yqvod.vo.FilmDetailVo;
 import net.sf.jsqlparser.schema.Server;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -18,8 +24,11 @@ import org.springframework.stereotype.Service;
  **/
 @Service("iFilmService")
 public class FilmServiceImpl implements IFilmService {
-
+    @Autowired
     private FilmMapper filmMapper;
+
+    @Autowired
+    private CategoryMapper categoryMapper;
 
     public ServerResponse saveOrUpdateFilm(Film film){
         if (film !=null){
@@ -62,7 +71,7 @@ public class FilmServiceImpl implements IFilmService {
         return ServerResponse.createByErrorMessage("修改影片销售状态失败");
     }
 
-    public ServerResponse<Object> manageFilmDetail(Integer filmId){
+    public ServerResponse<FilmDetailVo> manageFilmDetail(Integer filmId){
         if (filmId == null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(),ResponseCode.ILLEGAL_ARGUMENT.getDesc());
         }
@@ -71,6 +80,38 @@ public class FilmServiceImpl implements IFilmService {
         if (film == null){
             return ServerResponse.createByErrorMessage("影片已下架或者删除");
         }
+        FilmDetailVo filmDetailVo = assembleFilmDetailVo(film);
+        return ServerResponse.createBySuccess(filmDetailVo);
+
+    }
+
+    private FilmDetailVo assembleFilmDetailVo(Film film){
+        FilmDetailVo filmDetailVo = new FilmDetailVo();
+        filmDetailVo.setId(film.getId());
+        filmDetailVo.setCategoryId(film.getCategoryId());
+        filmDetailVo.setName(film.getName());
+        filmDetailVo.setSubtitle(film.getSubtitle());
+        filmDetailVo.setMainImage(film.getMainImage());
+        filmDetailVo.setSubImages(film.getSubImages());
+        filmDetailVo.setFilmUrl(film.getFilmUrl());
+        filmDetailVo.setDetail(film.getDetail());
+        filmDetailVo.setSource(film.getSource());
+        filmDetailVo.setCount(film.getCount());
+        filmDetailVo.setStatus(film.getStatus());
+
+        filmDetailVo.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix","http://image.yqvod.com/"));
+        Category category = categoryMapper.selectByPrimaryKey(film.getCategoryId());
+        if (category == null){
+            filmDetailVo.setParentCategoryId(0); //默认根节点
+        }else {
+            filmDetailVo.setParentCategoryId(category.getParentId());
+        }
+
+        filmDetailVo.setCreateTime(DateTimeUtil.dateToStr(film.getCreateTime()));
+        filmDetailVo.setUpdateTime(DateTimeUtil.dateToStr(film.getUpdateTime()));
+
+        return filmDetailVo;
+
     }
 
 }
