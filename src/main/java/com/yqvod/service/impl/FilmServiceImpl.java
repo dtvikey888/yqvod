@@ -35,7 +35,7 @@ public class FilmServiceImpl implements IFilmService {
                 if (rowCount>0){
                     return ServerResponse.createBySuccess("更新影片成功");
                 }
-                return ServerResponse.createBySuccess("更新影片失败");
+                return ServerResponse.createByErrorMessage("更新影片失败");
             }else{
                 int rowCount = filmMapper.insert(film);
                 if (rowCount>0) {
@@ -57,7 +57,19 @@ public class FilmServiceImpl implements IFilmService {
         film.setStatus(status);
         int rowCount = filmMapper.updateByPrimaryKeySelective(film);
         if (rowCount>0){
-            return ServerResponse.createBySuccess("修改产品销售状态成功");
+            return ServerResponse.createBySuccess("修改影片销售状态成功");
+        }
+        return ServerResponse.createByErrorMessage("修改影片销售状态失败");
+    }
+
+    public ServerResponse<Object> manageFilmDetail(Integer filmId){
+        if (filmId == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(),ResponseCode.ILLEGAL_ARGUMENT.getDesc());
+        }
+
+        Film film = filmMapper.selectByPrimaryKey(filmId);
+        if (film == null){
+            return ServerResponse.createByErrorMessage("影片已下架或者删除");
         }
     }
 
