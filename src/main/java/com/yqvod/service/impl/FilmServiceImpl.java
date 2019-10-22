@@ -130,7 +130,6 @@ public class FilmServiceImpl implements IFilmService {
             filmListVoList.add(filmListVo);
         }
         PageInfo pageResult = new PageInfo(filmList);
-
         pageResult.setList(filmListVoList);
         return ServerResponse.createBySuccess(pageResult);
 
@@ -147,6 +146,24 @@ public class FilmServiceImpl implements IFilmService {
         filmListVo.setFilmUrl(film.getFilmUrl());
         filmListVo.setStatus(film.getStatus());
         return filmListVo;
+    }
+
+    public ServerResponse<PageInfo> searchFilm(String filmName,Integer filmId,int pageNum,int pageSize){
+        PageHelper.startPage(pageNum,pageSize);
+        if (StringUtils.isNotBlank(filmName)){
+            filmName = new StringBuilder().append("%").append(filmName).append("%").toString();
+        }
+
+        List<Film> filmList = filmMapper.selectByNameAndFilmId(filmName,filmId);
+        List<FilmListVo> filmListVoList = Lists.newArrayList();
+        for (Film filmItem:filmList) {
+            FilmListVo filmListVo = assembleFilmListVo(filmItem);
+            filmListVoList.add(filmListVo);
+        }
+        PageInfo pageResult = new PageInfo(filmList);
+        pageResult.setList(filmListVoList);
+        return ServerResponse.createBySuccess(pageResult);
+
     }
 
 }

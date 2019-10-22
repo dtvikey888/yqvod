@@ -193,4 +193,19 @@
     from yqvod_film
     order by id asc
   </select>
+
+  <select id="selectByNameAndFilmId" parameterType="map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from yqvod_film
+    <where>
+      <if test="filmName!=null">
+        and name like #{filmName}
+      </if>
+      <if test="filmId!=null">
+        and id=#{filmId}
+      </if>
+    </where>
+  </select>
+
 </mapper>

@@ -1,19 +1,25 @@
 package com.yqvod.controller.backend;
 
+import com.google.common.collect.Maps;
 import com.yqvod.common.Const;
 import com.yqvod.common.ResponseCode;
 import com.yqvod.common.ServerResponse;
 import com.yqvod.pojo.Film;
 import com.yqvod.pojo.User;
+import com.yqvod.service.IFileService;
 import com.yqvod.service.IFilmService;
 import com.yqvod.service.IUserService;
+import com.yqvod.util.PropertiesUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Map;
 
 /**
  * @ClassName $ {NAME}
@@ -31,6 +37,9 @@ public class FilmManageController {
 
     @Autowired
     private IFilmService iFilmService;
+
+    @Autowired
+    private IFileService iFileService;
 
     @RequestMapping("save.do")
     @ResponseBody
@@ -96,5 +105,47 @@ public class FilmManageController {
         }
 
     }
+
+    @RequestMapping("search.do")
+    @ResponseBody
+    public ServerResponse filmSearch(HttpSession session,String filmName,Integer filmId, @RequestParam(value = "pageNum",defaultValue = "1")int pageNum, @RequestParam(value = "pageSize",defaultValue = "10")int pageSize){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if (user == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录，请登录管理员");
+        }
+        if (iUserService.checkAdminRole(user).isSuccess()){
+            return iFilmService.searchFilm(filmName,filmId,pageNum,pageSize);
+        }else{
+            return ServerResponse.createByErrorMessage("无权限操作");
+
+        }
+
+    }
+
+    @RequestMapping("upload.do")
+    @ResponseBody
+    public ServerResponse upload(HttpSession session, @RequestParam(value = "upload_file",required = false) MultipartFile file, HttpServletRequest request){
+        User user = (User) session.getAttribute(Const.CURRENT_USER);
+        if (user==null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录，请登录管理员");
+        }
+        if (iUserService.checkAdminRole(user).isSuccess()){
+            String path = request.getSession().getServletContext().getRealPath("upload");
+            String targetFileName = iFileService.upload(file,path);
+            String url = PropertiesUtil.getProperty("ftp.server.http.prefix")+targetFileName;
+
+            Map fileMap = Maps.newHashMap();
+            fileMap.put("uri",targetFileName);
+            fileMap.put("url",url);
+            return ServerResponse.createBySuccess(fileMap);
+
+        }else {
+
+            return ServerResponse.createByErrorMessage("无权限操作");
+
+        }
+
+    }
+
 
 }
