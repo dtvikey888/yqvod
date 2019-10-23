@@ -183,4 +183,17 @@ public class FilmServiceImpl implements IFilmService {
         return ServerResponse.createBySuccess(filmDetailVo);
     }
 
+    public ServerResponse<PageInfo> getFilmByKeywordCategory(String keyword,Integer categoryId,int pageNum,int pageSize){
+        if (StringUtils.isBlank(keyword)&&categoryId==null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(),ResponseCode.ILLEGAL_ARGUMENT.getDesc());
+        }
+        if (categoryId!=null){
+            Category category = categoryMapper.selectByPrimaryKey(categoryId);
+            if (category==null&&StringUtils.isBlank(keyword)){
+                //没有该分类，并且还没有关键字，这个时候返回一个空的结果集，不报错。
+                PageHelper.startPage(pageNum,pageSize);
+                List<FilmListVo> filmListVoList = Lists.newArrayList();
+            }
+        }
+    }
 }
