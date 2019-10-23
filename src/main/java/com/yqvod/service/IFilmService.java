@@ -11,4 +11,5 @@ public interface IFilmService {
     ServerResponse<FilmDetailVo> manageFilmDetail(Integer filmId);
     ServerResponse getFilmList(int pageNum,int pageSize);
     ServerResponse<PageInfo> searchFilm(String filmName, Integer filmId, int pageNum, int pageSize);
+    ServerResponse<FilmDetailVo> getFilmDetail(Integer filmId);
 }

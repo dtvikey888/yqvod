@@ -3,6 +3,7 @@ package com.yqvod.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
+import com.yqvod.common.Const;
 import com.yqvod.common.ResponseCode;
 import com.yqvod.common.ServerResponse;
 import com.yqvod.dao.CategoryMapper;
@@ -164,6 +165,22 @@ public class FilmServiceImpl implements IFilmService {
         pageResult.setList(filmListVoList);
         return ServerResponse.createBySuccess(pageResult);
 
+    }
+
+    public ServerResponse<FilmDetailVo> getFilmDetail(Integer filmId){
+        if (filmId == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(),ResponseCode.ILLEGAL_ARGUMENT.getDesc());
+        }
+
+        Film film = filmMapper.selectByPrimaryKey(filmId);
+        if (film == null){
+            return ServerResponse.createByErrorMessage("影片已下架或者删除");
+        }
+        if (film.getStatus()!=Const.FilmStatusEnum.ON_SALE.getCode()){
+            return ServerResponse.createByErrorMessage("影片已下架或者删除");
+        }
+        FilmDetailVo filmDetailVo = assembleFilmDetailVo(film);
+        return ServerResponse.createBySuccess(filmDetailVo);
     }
 
 }

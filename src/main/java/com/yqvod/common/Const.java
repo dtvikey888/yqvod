@@ -21,4 +21,22 @@ public class Const {
         int ROLE_CUSTOMER = 0; //普通用户
         int ROLE_ADMIN = 1;   //管理员
     }
+
+    public enum FilmStatusEnum{
+        ON_SALE(1,"在线");
+        private String value;
+        private int code;
+        FilmStatusEnum(int code,String value){
+            this.code=code;
+            this.value=value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public int getCode() {
+            return code;
+        }
+    }
 }
