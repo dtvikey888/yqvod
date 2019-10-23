@@ -6,6 +6,10 @@ package com.yqvod.common;/**
  * 创 建 人：fjw
  */
 
+import com.google.common.collect.Sets;
+
+import java.util.Set;
+
 /**
  * @ClassName $ {NAME}
  * @Description TODO
@@ -17,6 +21,10 @@ public class Const {
     public static final String CURRENT_USER="currentUser";
     public static final String EMAIL="email";
     public static final String USERNAME="username";
+
+    public interface FilmListOrderBy{
+        Set<String> COUNT_ASC_DESC = Sets.newHashSet("count_desc","count_asc");
+    }
     public interface Role{
         int ROLE_CUSTOMER = 0; //普通用户
         int ROLE_ADMIN = 1;   //管理员

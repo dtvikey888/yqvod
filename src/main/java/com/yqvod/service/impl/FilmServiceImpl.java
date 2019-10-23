@@ -10,6 +10,7 @@ import com.yqvod.dao.CategoryMapper;
 import com.yqvod.dao.FilmMapper;
 import com.yqvod.pojo.Category;
 import com.yqvod.pojo.Film;
+import com.yqvod.service.ICategoryService;
 import com.yqvod.service.IFilmService;
 import com.yqvod.util.DateTimeUtil;
 import com.yqvod.util.PropertiesUtil;
@@ -19,6 +20,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -35,6 +37,9 @@ public class FilmServiceImpl implements IFilmService {
 
     @Autowired
     private CategoryMapper categoryMapper;
+
+    @Autowired
+    private ICategoryService iCategoryService;
 
     public ServerResponse saveOrUpdateFilm(Film film){
         if (film !=null){
@@ -183,17 +188,40 @@ public class FilmServiceImpl implements IFilmService {
         return ServerResponse.createBySuccess(filmDetailVo);
     }
 
-    public ServerResponse<PageInfo> getFilmByKeywordCategory(String keyword,Integer categoryId,int pageNum,int pageSize){
+    public ServerResponse<PageInfo> getFilmByKeywordCategory(String keyword,Integer categoryId,int pageNum,int pageSize,String orderBy){
         if (StringUtils.isBlank(keyword)&&categoryId==null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(),ResponseCode.ILLEGAL_ARGUMENT.getDesc());
         }
+        List<Integer> categoryIdList = new ArrayList<Integer>();
+
         if (categoryId!=null){
             Category category = categoryMapper.selectByPrimaryKey(categoryId);
             if (category==null&&StringUtils.isBlank(keyword)){
                 //没有该分类，并且还没有关键字，这个时候返回一个空的结果集，不报错。
                 PageHelper.startPage(pageNum,pageSize);
                 List<FilmListVo> filmListVoList = Lists.newArrayList();
+                PageInfo pageInfo = new PageInfo(filmListVoList);
+                return ServerResponse.createBySuccess(pageInfo);
+
             }
+
+            categoryIdList = iCategoryService.selectCategoryAndChildrenById(category.getId()).getData();
+
         }
+
+         if (StringUtils.isNotBlank(keyword)){
+             keyword = new StringBuilder().append("%").append(keyword).append("%").toString();
+         }
+
+         PageHelper.startPage(pageNum,pageSize);
+         //排序处理
+         if (StringUtils.isNotBlank(orderBy)){
+            if (Const.FilmListOrderBy.COUNT_ASC_DESC.contains(orderBy)){
+                String[] orderByArray = orderBy.split("_");
+                PageHelper.orderBy(orderByArray[0]+" "+orderByArray[1]);
+            }
+         }
+
+         List<Film> filmList =
     }
 }
