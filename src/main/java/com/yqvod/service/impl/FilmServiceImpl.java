@@ -222,6 +222,15 @@ public class FilmServiceImpl implements IFilmService {
             }
          }
 
-         List<Film> filmList =
+         List<Film> filmList = filmMapper.selectByNameAndCategoryIds(StringUtils.isBlank(keyword)?null:keyword,categoryIdList.size()==0?null:categoryIdList);
+         List<FilmListVo> filmListVoList = Lists.newArrayList();
+         for (Film film : filmList){
+             FilmListVo filmListVo = assembleFilmListVo(film);
+             filmListVoList.add(filmListVo);
+         }
+
+         PageInfo pageInfo = new PageInfo(filmList);
+         pageInfo.setList(filmListVoList);
+         return ServerResponse.createBySuccess(pageInfo);
     }
 }

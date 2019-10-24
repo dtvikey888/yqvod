@@ -208,4 +208,20 @@
     </where>
   </select>
 
+  <select id="selectByNameAndCategoryIds" resultMap="BaseResultMap" parameterType="map">
+    select
+    <include refid="Base_Column_List"></include>
+    from yqvod_film
+    where status  = 1
+    <if test="filmName!=null">
+      and name like #{filmName}
+    </if>
+    <if test="categoryIdList!=null">
+      and category_id in
+      <foreach collection="categoryIdList" item="item" index="index" open="(" separator="," close=")">
+        #{item}
+      </foreach>
+    </if>
+  </select>
+
 </mapper>

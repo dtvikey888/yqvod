@@ -12,4 +12,5 @@ public interface IFilmService {
     ServerResponse getFilmList(int pageNum,int pageSize);
     ServerResponse<PageInfo> searchFilm(String filmName, Integer filmId, int pageNum, int pageSize);
     ServerResponse<FilmDetailVo> getFilmDetail(Integer filmId);
+    ServerResponse<PageInfo> getFilmByKeywordCategory(String keyword,Integer categoryId,int pageNum,int pageSize,String orderBy);
 }

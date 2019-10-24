@@ -22,4 +22,6 @@ public interface FilmMapper {
     List<Film> selectList();
 
     List<Film> selectByNameAndFilmId(@Param("filmName") String filmName,@Param("filmId") Integer filmId);
+
+    List<Film> selectByNameAndCategoryIds(@Param("filmName") String filmName,@Param("categoryIdList") List<Integer> categoryIdList);
 }

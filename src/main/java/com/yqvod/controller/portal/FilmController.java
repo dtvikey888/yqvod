@@ -28,12 +28,14 @@ public class FilmController {
         return iFilmService.getFilmDetail(filmId);
     }
 
+    @RequestMapping("list.do")
+    @ResponseBody
     public ServerResponse<PageInfo> list(@RequestParam(value = "keyword",required = false)String keyword,
                                          @RequestParam(value = "categoryId",required = false) Integer categoryId,
                                          @RequestParam(value = "pageNum",defaultValue = "1") int pageNum,
                                          @RequestParam(value = "pageSize",defaultValue = "10") int pageSize,
                                          @RequestParam(value = "orderBy",defaultValue = "") String orderBy){
-
+        return iFilmService.getFilmByKeywordCategory(keyword,categoryId,pageNum,pageSize,orderBy);
 
     }
 
