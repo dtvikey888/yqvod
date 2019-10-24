@@ -35,6 +35,7 @@ public class FilmController {
                                          @RequestParam(value = "pageNum",defaultValue = "1") int pageNum,
                                          @RequestParam(value = "pageSize",defaultValue = "10") int pageSize,
                                          @RequestParam(value = "orderBy",defaultValue = "") String orderBy){
+
         return iFilmService.getFilmByKeywordCategory(keyword,categoryId,pageNum,pageSize,orderBy);
 
     }
