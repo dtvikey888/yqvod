@@ -16,11 +16,20 @@ public class FilmListVo {
     private String subtitle;
     private String mainImage;
     private String filmUrl;
+    private Integer count;
     private Integer status;
     private String imageHost;
 
     public Integer getId() {
         return id;
+    }
+
+    public Integer getCount() {
+        return count;
+    }
+
+    public void setCount(Integer count) {
+        this.count = count;
     }
 
     public void setId(Integer id) {
