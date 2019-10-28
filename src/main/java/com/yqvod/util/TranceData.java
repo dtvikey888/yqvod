@@ -13,6 +13,19 @@ public class TranceData {
 
     public static void main(String[] args) {
 
+        for (int i = 0; i < 10 ; i++) {
+            System.out.println("***");
+            for (int j = 0; j < 60 ; j++) {
+                System.out.println("******");
+            }
+
+        }
+
+    }
+
+    /**
+    public static void main(String[] args) {
+
         try {
             MysqlDB db = new MysqlDB();
             MysqlDB2 db2 = new MysqlDB2();
@@ -106,6 +119,8 @@ public class TranceData {
         }
 
     }
+  **/
+
 
 
 
