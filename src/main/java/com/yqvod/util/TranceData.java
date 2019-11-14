@@ -12,27 +12,6 @@ import java.util.Scanner;
  **/
 public class TranceData {
 
-
-        public static void main(String[] args){
-            int i,j,k,n;
-            Scanner input=new Scanner(System.in);
-            System.out.print("请输入金字塔层数：");
-            n=input.nextInt();//外层循环控制层数
-            for(i=1;i<=n;i++)
-            {
-                //根据外层行号，输出星号左边空格
-                for(j=1;j<=n-i;j++)
-                    System.out.print(" ");//根据外层行号，输出星号个数
-                for(k=1;k<=2*i-1;k++)
-                    System.out.printf("*");//一行结束，换行
-                System.out.printf("\n");
-            }
-
-        }
-
-
-
-    /**
     public static void main(String[] args) {
 
         try {
@@ -51,9 +30,9 @@ public class TranceData {
                     "film.hits as count," +
                     "film.dateandtime as create_time," +
                     "film.dateandtime as update_time " +
-                    "FROM  url,film WHERE url.filmid = film.id and film.typeid=56 ";
+                    "FROM  url,film WHERE url.filmid = film.id and film.typeid=54 ";
 
-            int category_id=16;
+            int category_id=8;
             int status=1;
             String sub_images="";
             String sql2="";
@@ -128,7 +107,7 @@ public class TranceData {
         }
 
     }
-  **/
+
 
 
 
