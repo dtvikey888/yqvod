@@ -163,11 +163,11 @@ public class FilmManageController {
         }
 
         //富文本中对于返回值有自己的要求,我们使用是simditor所以按照simditor的要求进行返回
-//        {
-//            "success": true/false,
-//                "msg": "error message", # optional
-//            "file_path": "[real file path]"
-//        }
+//      {
+//           "success": true/false,
+//           "msg": "error message", # optional
+//           "file_path": "[real file path]"
+//      }
 
         if (iUserService.checkAdminRole(user).isSuccess()){
             String path = request.getSession().getServletContext().getRealPath("upload");
