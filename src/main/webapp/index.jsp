@@ -14,6 +14,6 @@ springmvc上传文件 你好github
     <input type="file" name="upload_file" />
     <input type="submit" value="富文本图片上传文件" />
 </form>
-
+test
 </body>
 </html>
