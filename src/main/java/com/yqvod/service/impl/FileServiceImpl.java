@@ -22,7 +22,7 @@ public class FileServiceImpl implements IFileService {
 
     private Logger logger = LoggerFactory.getLogger(FileServiceImpl.class);
 
-    public String upload22(MultipartFile file,String path){
+    public String upload(MultipartFile file,String path){
         String fileName = file.getOriginalFilename();
         //扩展名
         //abc.jpg
