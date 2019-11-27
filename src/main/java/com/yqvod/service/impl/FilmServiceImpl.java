@@ -147,7 +147,7 @@ public class FilmServiceImpl implements IFilmService {
         filmListVo.setCategoryId(film.getCategoryId());
         filmListVo.setName(film.getName());
         filmListVo.setSubtitle(film.getSubtitle());
-        filmListVo.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix","http://image.yqvod.com/"));
+        filmListVo.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix","http://img.yqrb.com.cn/"));
         filmListVo.setMainImage(film.getMainImage());
         filmListVo.setFilmUrl(film.getFilmUrl());
         filmListVo.setCount(film.getCount());

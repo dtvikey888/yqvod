@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
@@ -39,4 +40,20 @@ public class UserManageController {
         }
         return response;
     }
+
+    //用户列表 /manage/user/list.do
+    @RequestMapping(value = "/list.do",method = RequestMethod.POST)
+    @ResponseBody
+    public ServerResponse list(@RequestParam(value = "pageNum",defaultValue = "1")int pageNum,@RequestParam(value = "pageSize",defaultValue = "5")int pageSize,HttpSession session){
+        User user = (User) session.getAttribute(Const.CURRENT_USER);
+        if(user==null) {
+            return ServerResponse.createByErrorMessage("请登录后再试");
+        }
+        if(Const.Role.ROLE_ADMIN != user.getRole()) {
+            return ServerResponse.createByErrorMessage("非管理员访问");
+        }
+        return iUserService.list(pageNum, pageSize);
+    }
+
+
 }

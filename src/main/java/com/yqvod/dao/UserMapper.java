@@ -3,6 +3,8 @@ package com.yqvod.dao;
 import com.yqvod.pojo.User;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 public interface UserMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -31,5 +33,7 @@ public interface UserMapper {
     int checkPassword(@Param(value = "password")String password,@Param("userId")Integer userId);
 
     int checkEmailByUserId(@Param(value = "email") String email,@Param(value = "userId")Integer userId);
+
+    List<User> list();
 
 }

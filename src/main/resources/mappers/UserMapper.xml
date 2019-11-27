@@ -198,6 +198,13 @@
     where email = #{email}
     and id != #{userId}
   </select>
+  <select id="list" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from yqvod_user
+    order by id asc
+  </select>
+
 
 
 </mapper>

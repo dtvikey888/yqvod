@@ -2,6 +2,7 @@ package com.yqvod.service;
 
 import com.yqvod.common.ServerResponse;
 import com.yqvod.pojo.User;
+import com.github.pagehelper.PageInfo;
 
 /**
  * 项目名称：yqvod
@@ -21,4 +22,5 @@ public interface IUserService {
     ServerResponse<User> updateInformation(User user);
     ServerResponse<User> getInformation(Integer userId);
     ServerResponse checkAdminRole(User user);
+    ServerResponse<PageInfo> list(int pageNum,int pageSize);
 }

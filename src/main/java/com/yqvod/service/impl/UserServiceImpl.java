@@ -1,5 +1,6 @@
 package com.yqvod.service.impl;
 
+import com.github.pagehelper.PageHelper;
 import com.yqvod.common.Const;
 import com.yqvod.common.ServerResponse;
 import com.yqvod.common.TokenCache;
@@ -7,11 +8,12 @@ import com.yqvod.dao.UserMapper;
 import com.yqvod.pojo.User;
 import com.yqvod.service.IUserService;
 import com.yqvod.util.MD5Util;
-import net.sf.jsqlparser.schema.Server;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.github.pagehelper.PageInfo;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -225,6 +227,14 @@ public class UserServiceImpl implements IUserService {
             return ServerResponse.createBySuccess();
         }
         return ServerResponse.createByError();
+    }
+
+    //获取用户列表
+    public ServerResponse<PageInfo> list(int pageNum,int pageSize){
+        PageHelper.startPage(pageNum,pageSize);
+        List<User> list = userMapper.list();
+        PageInfo pageinfo = new PageInfo(list);
+        return ServerResponse.createBySuccess(pageinfo);
     }
 
 
