@@ -191,7 +191,7 @@
     select
     <include refid="Base_Column_List"/>
     from yqvod_film
-    order by id asc
+    order by id desc
   </select>
 
   <select id="selectByNameAndFilmId" parameterType="map" resultMap="BaseResultMap">
