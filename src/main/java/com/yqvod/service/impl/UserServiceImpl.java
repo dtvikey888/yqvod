@@ -34,9 +34,9 @@ public class UserServiceImpl implements IUserService {
             return ServerResponse.createByErrorMessage("用户名不存在");
         }
 
-        //todo 密码登录md5
-        String md5Password = MD5Util.MD5EncodeUtf8(password);
-        User user = userMapper.selectLogin(username,md5Password);
+        //todo 密码登录md5(不处理先)
+        //String md5Password = MD5Util.MD5EncodeUtf8(password);
+        User user = userMapper.selectLogin(username,password);
         if (user==null){
             return ServerResponse.createByErrorMessage("密码错误");
         }
@@ -229,7 +229,12 @@ public class UserServiceImpl implements IUserService {
         return ServerResponse.createByError();
     }
 
-    //获取用户列表
+    /**
+     * 获取用户列表
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
     public ServerResponse<PageInfo> list(int pageNum,int pageSize){
         PageHelper.startPage(pageNum,pageSize);
         List<User> list = userMapper.list();
