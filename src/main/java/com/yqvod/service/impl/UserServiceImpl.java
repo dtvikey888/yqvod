@@ -160,7 +160,8 @@ public class UserServiceImpl implements IUserService {
     @Override
     public ServerResponse<String> resetPassword(String passwordOld,String passwordNew,User user){
         //防止横向越权,要校验一下这个用户的旧密码，一定要指定是这个用户，因为我们会查询一个count(1),如果不能指定id,那么结果就是true啦count>0;
-        int resultCount=userMapper.checkPassword(MD5Util.MD5EncodeUtf8(passwordOld),user.getId());
+        //int resultCount=userMapper.checkPassword(MD5Util.MD5EncodeUtf8(passwordOld),user.getId());
+        int resultCount=userMapper.checkPassword(passwordOld,user.getId());
         if (resultCount==0){
             return ServerResponse.createByErrorMessage("旧密码错误");
         }
