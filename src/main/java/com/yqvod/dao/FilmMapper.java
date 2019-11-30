@@ -17,6 +17,8 @@ public interface FilmMapper {
 
     int updateByPrimaryKeySelective(Film record);
 
+    int addCount(@Param("filmId") Integer filmId);
+
     int updateByPrimaryKey(Film record);
 
     List<Film> selectList();

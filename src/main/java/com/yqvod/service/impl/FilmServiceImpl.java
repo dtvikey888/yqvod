@@ -82,6 +82,18 @@ public class FilmServiceImpl implements IFilmService {
         return ServerResponse.createByErrorMessage("修改影片销售状态失败");
     }
 
+    // 增加点击次数
+    public ServerResponse<String> takeCount(Integer filmId){
+        if (filmId == null ){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(),ResponseCode.ILLEGAL_ARGUMENT.getDesc());
+        }
+        int rowCount = filmMapper.addCount(filmId);
+        if (rowCount>0){
+            return ServerResponse.createBySuccess("修改影片点击次数成功");
+        }
+        return ServerResponse.createByErrorMessage("修改影片点击次数失败");
+    }
+
     public ServerResponse<FilmDetailVo> manageFilmDetail(Integer filmId){
         if (filmId == null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(),ResponseCode.ILLEGAL_ARGUMENT.getDesc());

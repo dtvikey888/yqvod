@@ -194,6 +194,11 @@
     order by id desc
   </select>
 
+  <update id="addCount">
+		update yqvod_film set count=count+1 where id=#{filmId}
+  </update>
+
+
   <select id="selectByNameAndFilmId" parameterType="map" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List"/>
