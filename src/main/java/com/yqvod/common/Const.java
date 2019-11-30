@@ -23,7 +23,7 @@ public class Const {
     public static final String USERNAME="username";
 
     public interface FilmListOrderBy{
-        Set<String> COUNT_ASC_DESC = Sets.newHashSet("count_desc","count_asc");
+        Set<String> COUNT_ASC_DESC = Sets.newHashSet("count_desc","count_asc","id_desc","id_asc");
     }
     public interface Role{
         int ROLE_CUSTOMER = 0; //普通用户
