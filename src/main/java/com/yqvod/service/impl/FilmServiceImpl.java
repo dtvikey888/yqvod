@@ -230,7 +230,7 @@ public class FilmServiceImpl implements IFilmService {
          //排序处理
          if (StringUtils.isNotBlank(orderBy)){
             if (Const.FilmListOrderBy.COUNT_ASC_DESC.contains(orderBy)){
-                String[] orderByArray = orderBy.split("_");
+                String[] orderByArray = orderBy.split("-");
                 PageHelper.orderBy(orderByArray[0]+" "+orderByArray[1]);
             }
          }
