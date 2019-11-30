@@ -41,7 +41,7 @@ public class FilmController {
     }
 
     // 增加点击次数
-    @RequestMapping("take_count")
+    @RequestMapping("take_count.do")
     @ResponseBody
     public ServerResponse takeCount(Integer filmId){
         return iFilmService.takeCount(filmId);
