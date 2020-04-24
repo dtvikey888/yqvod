@@ -19,7 +19,7 @@
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
-    id, category_id, name, subtitle, main_image, sub_images, film_url, detail, source, 
+    id, category_id, `name`, subtitle, main_image, sub_images, film_url, detail, source,
     count, status, create_time, update_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
