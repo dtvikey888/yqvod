@@ -34,7 +34,7 @@ public class CategoryServiceImpl implements ICategoryService {
 
     public ServerResponse addCategory(String categoryName,Integer parentId){
         if (parentId == null || StringUtils.isBlank(categoryName)){
-            return ServerResponse.createByErrorMessage("添加品类参数错误");
+            return ServerResponse.createByErrorMessage("添加分类参数错误");
         }
 
         Category category = new Category();
