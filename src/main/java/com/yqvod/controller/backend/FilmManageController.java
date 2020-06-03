@@ -100,8 +100,11 @@ public class FilmManageController {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录，请登录管理员");
         }
         if (iUserService.checkAdminRole(user).isSuccess()){
+
             return iFilmService.getFilmList(pageNum,pageSize);
+
         }else{
+
             return ServerResponse.createByErrorMessage("无权限操作");
 
         }
@@ -127,7 +130,9 @@ public class FilmManageController {
     @RequestMapping("upload.do")
     @ResponseBody
     public ServerResponse upload(HttpSession session, @RequestParam(value = "upload_file",required = false) MultipartFile file, HttpServletRequest request){
+
         User user = (User) session.getAttribute(Const.CURRENT_USER);
+
         if (user==null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录，请登录管理员");
         }
@@ -187,6 +192,7 @@ public class FilmManageController {
 
 
         }else {
+
             resultMap.put("success",false);
             resultMap.put("msg","无权限操作");
             return resultMap;
